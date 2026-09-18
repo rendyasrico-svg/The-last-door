@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+  >
+
+  <meta name="screen-orientation" content="landscape">
+
+  <title>The Last Door</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- GAME 3D -->
+  <div id="game-container"></div>
+
+
+  <!-- SPLASH / TITLE SCREEN -->
+<div id="splash-screen">
+
+  <div class="splash-bg"></div>
+
+  <div class="splash-fog"></div>
+
+  <button id="tap-to-play">
+    TAP TO PLAY
+  </button>
+
+</div>
+
+
+  <!-- =========================
+       MAIN MENU
+  ========================== -->
+
+  <div id="start-screen">
+
+    <div class="menu-overlay"></div>
+
+    <div class="main-menu">
+
+      <div class="game-title">
+
+        <h1>THE LAST DOOR</h1>
+
+        <p>Find a way out.</p>
+
+      </div>
+
+
+      <div class="menu-buttons">
+
+        <button id="start-btn">
+          START GAME
+        </button>
+
+        <button id="options-btn">
+          OPTIONS
+        </button>
+
+        <button id="how-btn">
+          HOW TO PLAY
+        </button>
+
+        <button id="credits-btn">
+          CREDITS
+        </button>
+
+      </div>
+
+      <div class="version">
+        VERSION 0.1
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       DIFFICULTY
+  ========================== -->
+
+  <div
+    id="difficulty-screen"
+    class="menu-panel"
+  >
+
+    <div class="panel-content">
+
+      <h2>SELECT DIFFICULTY</h2>
+
+      <p class="subtitle">
+        Choose your nightmare.
+      </p>
+
+
+      <button
+        class="difficulty-btn"
+        data-difficulty="easy"
+      >
+        EASY
+        <span>
+          The Caretaker is slower.
+        </span>
+      </button>
+
+
+      <button
+        class="difficulty-btn"
+        data-difficulty="normal"
+      >
+        NORMAL
+        <span>
+          The intended experience.
+        </span>
+      </button>
+
+
+      <button
+        class="difficulty-btn hard"
+        data-difficulty="hard"
+      >
+        HARD
+        <span>
+          The Caretaker shows no mercy.
+        </span>
+      </button>
+
+
+      <button
+        class="back-btn"
+        data-back="difficulty"
+      >
+        ← BACK
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       OPTIONS
+  ========================== -->
+
+  <div
+    id="options-screen"
+    class="menu-panel"
+  >
+
+    <div class="panel-content">
+
+      <h2>OPTIONS</h2>
+
+
+      <div class="setting">
+
+        <label>
+          MUSIC
+        </label>
+
+        <input
+          id="music-volume"
+          type="range"
+          min="0"
+          max="1"
+          value="0.5"
+          step="0.1"
+        >
+
+      </div>
+
+
+      <div class="setting">
+
+        <label>
+          SOUND EFFECTS
+        </label>
+
+        <input
+          id="sfx-volume"
+          type="range"
+          min="0"
+          max="1"
+          value="0.7"
+          step="0.1"
+        >
+
+      </div>
+
+
+      <div class="setting">
+
+        <label>
+          LOOK SENSITIVITY
+        </label>
+
+        <input
+          id="sensitivity"
+          type="range"
+          min="0.002"
+          max="0.012"
+          value="0.005"
+          step="0.001"
+        >
+
+      </div>
+
+
+      <button
+        class="back-btn"
+        data-back="options"
+      >
+        ← BACK
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       HOW TO PLAY
+  ========================== -->
+
+  <div
+    id="how-screen"
+    class="menu-panel"
+  >
+
+    <div class="panel-content">
+
+      <h2>HOW TO PLAY</h2>
+
+      <div class="instructions">
+
+        <p>
+          Use the left joystick to move.
+        </p>
+
+        <p>
+          Swipe the right side of the screen
+          to look around.
+        </p>
+
+        <p>
+          Press CROUCH to move quietly —
+          The Caretaker hears you less.
+        </p>
+
+        <p>
+          Press INTERACT to open doors, pick up
+          items, and solve puzzles.
+        </p>
+
+        <p>
+          Find the key, unlock the cabinet, and
+          unlock the front door to escape.
+        </p>
+
+        <p>
+          Find weapons to fight back: a melee
+          weapon (INTERACT when close) and a
+          pistol (SHOOT button, limited ammo).
+        </p>
+
+        <p class="warning">
+          Don't let The Caretaker see or hear you.
+          If it catches you, it's game over.
+        </p>
+
+      </div>
+
+
+      <button
+        class="back-btn"
+        data-back="how"
+      >
+        ← BACK
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       CREDITS
+  ========================== -->
+
+  <div
+    id="credits-screen"
+    class="menu-panel"
+  >
+
+    <div class="panel-content">
+
+      <h2>THE LAST DOOR</h2>
+
+      <div class="credits-text">
+
+        <p>
+          Created by
+        </p>
+
+        <strong>
+          RENDI ASRIKO
+        </strong>
+
+        <p>
+          Powered by Three.js
+        </p>
+
+        <p class="small-text">
+          Prototype Version 0.1
+        </p>
+
+      </div>
+
+
+      <button
+        class="back-btn"
+        data-back="credits"
+      >
+        ← BACK
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       GAME HUD
+  ========================== -->
+
+  <div id="tension-vignette"></div>
+
+
+  <div id="crosshair">
+    +
+  </div>
+
+
+  <div id="objective"></div>
+
+
+  <button id="pause-btn">
+    ‖
+  </button>
+
+
+  <div id="pause-overlay">
+
+    <div class="pause-content">
+
+      <h2>PAUSED</h2>
+
+      <button id="resume-btn">
+        RESUME
+      </button>
+
+      <button id="quit-btn">
+        QUIT TO MENU
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="joystick">
+
+    <div id="stick"></div>
+
+  </div>
+
+
+  <button id="interact-btn">
+    INTERACT
+  </button>
+
+
+  <button id="crouch-btn">
+    CROUCH
+  </button>
+
+
+  <button id="shoot-btn">
+    SHOOT
+  </button>
+
+
+  <div id="ammo-counter"></div>
+
+
+  <div id="inventory-bar"></div>
+
+
+  <div id="message"></div>
+
+
+  <div id="catch-flash"></div>
+
+
+  <script
+    type="module"
+    src="game.js"
+  ></script>
+
+</body>
+
+</html>

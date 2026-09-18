@@ -1,0 +1,1094 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  background: #000;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  touch-action: none;
+
+  color: white;
+}
+
+
+/* =========================
+   GAME
+========================= */
+
+#game-container {
+  position: fixed;
+  inset: 0;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================
+   SPLASH / TITLE SCREEN
+========================= */
+
+#splash-screen {
+  position: fixed;
+  inset: 0;
+
+  z-index: 500;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  padding: 0 0 40px;
+
+  overflow: hidden;
+
+  background: #000;
+}
+
+
+.splash-bg {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    url("assets/images/splash.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /*
+     Fallback: kalau splash.png gagal load
+     (belum keupload/salah path), warna dasar
+     ini tetap kelihatan (bukan blank/hitam polos).
+  */
+  background-color: #14100d;
+
+  animation:
+    splashZoom 8s ease-in-out infinite alternate;
+}
+
+
+.splash-fog {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 30% 70%,
+      rgba(120, 100, 70, 0.12),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 70% 40%,
+      rgba(80, 90, 110, 0.1),
+      transparent 50%
+    );
+
+  animation:
+    fogDrift 14s ease-in-out infinite alternate;
+}
+
+@keyframes fogDrift {
+  from {
+    transform: translateX(-3%) translateY(0%);
+  }
+  to {
+    transform: translateX(3%) translateY(-2%);
+  }
+}
+
+
+.splash-bg::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.05),
+      rgba(0,0,0,0.05) 60%,
+      rgba(0,0,0,0.65)
+    );
+}
+
+
+#tap-to-play {
+  position: absolute;
+  left: 50%;
+  bottom: 7%;
+
+  transform: translateX(-50%);
+
+  z-index: 10;
+
+  pointer-events: auto;
+
+  padding: 16px 34px;
+
+  border: none;
+  background: transparent;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 10px;
+
+  letter-spacing: 4px;
+
+  text-shadow:
+    0 0 8px rgba(255,255,255,.4);
+
+  animation:
+    tapBlink 1.4s ease-in-out infinite;
+
+  cursor: pointer;
+}
+
+@keyframes tapBlink {
+  0%, 100% {
+    opacity: .25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+@keyframes splashZoom {
+
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.04);
+  }
+
+}
+
+
+#splash-screen.hide-splash {
+
+  opacity: 0;
+
+  transition:
+    opacity .8s ease;
+
+  pointer-events: none;
+}
+
+
+/* =========================
+   MAIN MENU
+========================= */
+
+#start-screen {
+  position: fixed;
+  inset: 0;
+
+  z-index: 200;
+
+  display: none;
+
+  background:
+    radial-gradient(
+      circle at 70% 50%,
+      #242424,
+      #080808 55%,
+      #000 100%
+    );
+}
+
+
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.95),
+      rgba(0,0,0,.55),
+      rgba(0,0,0,.3)
+    );
+}
+
+
+.main-menu {
+  position: relative;
+
+  z-index: 2;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding-left: 9%;
+}
+
+
+.game-title h1 {
+  font-size: 46px;
+
+  letter-spacing: 8px;
+
+  font-weight: 400;
+}
+
+
+.game-title p {
+  margin-top: 8px;
+
+  color: #888;
+
+  letter-spacing: 5px;
+}
+
+
+.menu-buttons {
+  width: 280px;
+
+  margin-top: 45px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.menu-buttons button {
+  padding: 12px 15px;
+
+  text-align: left;
+
+  border: none;
+
+  border-left:
+    2px solid transparent;
+
+  background:
+    transparent;
+
+  color: #aaa;
+
+  font-size: 14px;
+
+  letter-spacing: 3px;
+}
+
+
+.menu-buttons button:active {
+  color: white;
+
+  border-left:
+    2px solid white;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .06
+    );
+}
+
+
+.version {
+  position: absolute;
+
+  right: 20px;
+  bottom: 15px;
+
+  color: #444;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================
+   PANELS
+========================= */
+
+.menu-panel {
+  position: fixed;
+  inset: 0;
+
+  z-index: 300;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .96
+    );
+}
+
+
+.panel-content {
+  width: 80%;
+  max-width: 500px;
+}
+
+
+.panel-content h2 {
+  font-size: 28px;
+
+  font-weight: 400;
+
+  letter-spacing: 6px;
+
+  margin-bottom: 8px;
+}
+
+
+.subtitle {
+  color: #666;
+
+  margin-bottom: 30px;
+
+  letter-spacing: 2px;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   DIFFICULTY
+========================= */
+
+.difficulty-btn {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  margin-bottom: 8px;
+
+  padding: 12px 18px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .04
+    );
+
+  border:
+    1px solid #333;
+
+  color: white;
+
+  letter-spacing: 3px;
+
+  font-size: 13px;
+}
+
+
+.difficulty-btn span {
+  margin-top: 5px;
+
+  color: #666;
+
+  font-size: 9px;
+
+  letter-spacing: 1px;
+}
+
+
+.difficulty-btn:active {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .12
+    );
+}
+
+
+.difficulty-btn.hard {
+  border-color:
+    #4b2424;
+}
+
+
+/* =========================
+   OPTIONS
+========================= */
+
+.setting {
+  margin:
+    25px
+    0;
+}
+
+
+.setting label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #aaa;
+
+  letter-spacing: 3px;
+
+  font-size: 11px;
+}
+
+
+.setting input {
+  width: 100%;
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+.back-btn {
+  margin-top: 25px;
+
+  padding: 10px 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #777;
+
+  letter-spacing: 3px;
+}
+
+
+.back-btn:active {
+  color: white;
+}
+
+
+/* =========================
+   HOW TO PLAY
+========================= */
+
+.instructions {
+  margin-top: 25px;
+
+  line-height: 1.8;
+
+  color: #aaa;
+
+  font-size: 12px;
+}
+
+
+.instructions p {
+  margin-bottom: 8px;
+}
+
+
+.instructions .warning {
+  margin-top: 20px;
+
+  color: #a65b5b;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================
+   CREDITS
+========================= */
+
+.credits-text {
+  margin-top: 30px;
+
+  color: #777;
+
+  line-height: 2;
+}
+
+
+.credits-text strong {
+  display: block;
+
+  color: white;
+
+  font-size: 18px;
+
+  letter-spacing: 5px;
+}
+
+
+.small-text {
+  margin-top: 20px;
+
+  font-size: 9px;
+}
+
+
+/* =========================
+   GAME HUD
+========================= */
+
+/* =========================
+   TENSION VIGNETTE
+========================= */
+
+#tension-vignette {
+  position: fixed;
+  inset: 0;
+
+  z-index: 22;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition: opacity 0.25s ease;
+
+  background: radial-gradient(
+    ellipse at center,
+    transparent 45%,
+    rgba(120, 0, 0, 0.55) 100%
+  );
+}
+
+
+#crosshair {
+  position: fixed;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  z-index: 20;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      .8
+    );
+
+  font-size: 22px;
+
+  pointer-events: none;
+
+  display: none;
+
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+#crosshair.near-interactable {
+
+  color: rgba(255, 214, 120, 0.95);
+
+  transform: translate(-50%, -50%) scale(1.4);
+
+  text-shadow: 0 0 8px rgba(255, 200, 80, 0.7);
+
+}
+
+
+/* =========================
+   OBJECTIVE
+========================= */
+
+#objective {
+  position: fixed;
+
+  left: 50%;
+  top: 18px;
+
+  transform: translateX(-50%);
+
+  z-index: 25;
+
+  color: rgba(255, 235, 200, 0.9);
+
+  font-size: 12px;
+  letter-spacing: 1.5px;
+
+  text-align: center;
+  max-width: 80%;
+
+  text-shadow:
+    0 0 8px rgba(0, 0, 0, 0.9),
+    0 0 2px rgba(0, 0, 0, 1);
+
+  pointer-events: none;
+
+  display: none;
+}
+
+
+
+/* =========================
+   JOYSTICK
+========================= */
+
+#joystick {
+  position: fixed;
+
+  left: 30px;
+  bottom: 35px;
+
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      .25
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .08
+    );
+
+  z-index: 30;
+
+  display: none;
+}
+
+
+#stick {
+  position: absolute;
+
+  left: 35px;
+  top: 35px;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .45
+    );
+}
+
+
+/* =========================
+   INTERACT
+========================= */
+
+#interact-btn {
+  position: fixed;
+
+  right: 30px;
+  bottom: 45px;
+
+  width: 95px;
+  height: 95px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      .3
+    );
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .45
+    );
+
+  color: white;
+
+  z-index: 30;
+
+  font-size: 12px;
+
+  display: none;
+}
+
+
+/* =========================
+   CROUCH
+========================= */
+
+#crouch-btn {
+  position: fixed;
+
+  right: 45px;
+  bottom: 155px;
+
+  width: 65px;
+  height: 65px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(
+      255,
+      255,
+      255,
+      .3
+    );
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .45
+    );
+
+  color: white;
+
+  z-index: 30;
+
+  font-size: 10px;
+
+  letter-spacing: 1px;
+
+  display: none;
+}
+
+#crouch-btn.active {
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .25
+    );
+
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      .6
+    );
+
+}
+
+
+/* =========================
+   SHOOT
+========================= */
+
+#catch-flash {
+  position: fixed;
+  inset: 0;
+
+  z-index: 90;
+
+  background: radial-gradient(
+    circle,
+    rgba(180, 0, 0, 0) 40%,
+    rgba(140, 0, 0, 0.55) 100%
+  );
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+#catch-flash.active {
+
+  animation: catchFlashPulse 0.6s ease-out 3;
+
+}
+
+@keyframes catchFlashPulse {
+  0% { opacity: 0.9; }
+  50% { opacity: 0.15; }
+  100% { opacity: 0.7; }
+}
+
+#shoot-btn {
+  position: fixed;
+
+  right: 130px;
+  bottom: 60px;
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+
+  border: 2px solid rgba(255, 90, 60, 0.5);
+
+  background: rgba(60, 10, 5, 0.55);
+
+  color: #ffd9c9;
+
+  z-index: 30;
+
+  font-size: 11px;
+  letter-spacing: 1px;
+
+  display: none;
+}
+
+#shoot-btn:active {
+
+  background: rgba(120, 20, 10, 0.7);
+
+}
+
+#shoot-btn.no-ammo {
+
+  opacity: 0.35;
+
+}
+
+
+#ammo-counter {
+  position: fixed;
+
+  right: 135px;
+  bottom: 135px;
+
+  z-index: 30;
+
+  color: rgba(255, 220, 200, 0.85);
+
+  font-size: 11px;
+  letter-spacing: 1px;
+
+  text-shadow: 0 0 6px rgba(0,0,0,.9);
+
+  pointer-events: none;
+
+  display: none;
+}
+
+
+/* =========================
+   INVENTORY BAR
+========================= */
+
+#inventory-bar {
+  position: fixed;
+
+  left: 50%;
+  top: 44px;
+
+  transform: translateX(-50%);
+
+  z-index: 25;
+
+  color: rgba(220, 210, 190, 0.75);
+
+  font-size: 10px;
+  letter-spacing: 1.5px;
+
+  text-shadow: 0 0 6px rgba(0,0,0,.9);
+
+  pointer-events: none;
+
+  display: none;
+}
+
+
+/* =========================
+   PAUSE
+========================= */
+
+#pause-btn {
+  position: fixed;
+
+  left: 14px;
+  top: 14px;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  background: rgba(0, 0, 0, 0.45);
+
+  color: white;
+
+  font-size: 16px;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 60;
+
+  display: none;
+}
+
+#pause-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 700;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.85);
+}
+
+#pause-overlay.active {
+  display: flex;
+}
+
+.pause-content {
+  text-align: center;
+}
+
+.pause-content h2 {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  color: #ece6da;
+  margin-bottom: 30px;
+}
+
+.pause-content button {
+  display: block;
+  width: 220px;
+  margin: 0 auto 12px;
+  padding: 14px 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+
+  color: #ddd;
+  letter-spacing: 3px;
+  font-size: 13px;
+}
+
+.pause-content button:active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+#message {
+  position: fixed;
+
+  left: 50%;
+  bottom: 170px;
+
+  transform:
+    translateX(-50%);
+
+  color: white;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      .7
+    );
+
+  padding:
+    10px
+    18px;
+
+  border-radius: 5px;
+
+  display: none;
+
+  z-index: 40;
+}
+
+
+/* =========================
+   FORCE LANDSCAPE (visual only)
+   Trik CSS rotate — tampilan jadi landscape
+   tanpa perlu screen.orientation.lock().
+   CATATAN: joystick/touch TIDAK berfungsi normal
+   selama trik ini aktif (dipakai cuma buat cek
+   visual/layout, bukan buat main beneran).
+========================= */
+
+@media screen and (max-aspect-ratio: 1/1) {
+  body {
+    transform: rotate(90deg);
+    transform-origin: top left;
+
+    width: 100vh;
+    height: 100vw;
+
+    position: fixed;
+    top: 0;
+    left: 100%;
+
+    overflow: hidden;
+  }
+}
